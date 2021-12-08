@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<!-- DB접속정보 값을 가지고 있는 파일 설정 -->
+	<properties resource="db.properties" />
+
+	<!-- Java Class에 대한 alias 지정 / xml에서의 별칭 지정하는거랑 같음 -->
+	<typeAliases>
+		<typeAlias type="baseball.vo.UserVO" alias="users" />
+		<typeAlias type="baseball.vo.UserCharacterVO" alias="character" />
+		<typeAlias type="baseball.vo.ItemVO" alias="item"/>
+		<typeAlias type="baseball.vo.ItemHaveInfoVO" alias="itemhaveinfo"/>
+		<typeAlias type="baseball.vo.ItemEquipInventoryVO" alias="itemequiphaveInfo"/>
+		<typeAlias type="baseball.vo.ItemEquipinfoVO" alias="itemquipinfo"/>
+		<typeAlias type="baseball.vo.HofVO" alias="hof" />
+		<typeAlias type="baseball.vo.QuizVO" alias="quiz" />
+		<typeAlias type="baseball.vo.QuizScoreVO" alias="quizScore" />
+		<typeAlias type="baseball.vo.TrainingVO" alias="training" />
+	</typeAliases>
+	
+	<!-- DB접속 정보 셋팅 -->
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="${driver}" />
+				<property name="url" value="${url}" />
+				<property name="username" value="${username}" />
+				<property name="password" value="${password}" />
+			</dataSource>
+		</environment>
+	</environments>
+	
+	<!-- Mapper 파일 include -->
+	<mappers>
+		<mapper resource="BaseballMapper.xml" />
+	</mappers>
+	
+</configuration>

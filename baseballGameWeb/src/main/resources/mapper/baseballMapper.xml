@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.scit.test11.dao.BaseballMapper">
+	
+<select id="totalNow" resultType="int">
+	select
+		count(*)
+	from
+		usercharacter
+</select>	
+
+<select id="rank" parameterType="int" resultType="character">
+	select
+		(hitterpower+hitterhit+hitterrunspeed+pitcherballspeed+pitcherballcontrol+pitchermentality) as allstat
+		, uct.*
+	from
+		usercharacter uct
+	order by
+		allstat desc
+</select>
+
+<select id="hof" resultType="character">
+	select
+		*
+	from
+		halloffame
+	order by
+		allstat desc
+</select>
+
+	
+<select id="characterStat" parameterType="int" resultType="character">
+	select
+		(hitterpower+hitterhit+hitterrunspeed+pitcherballspeed+pitcherballcontrol+pitchermentality) as allstat
+		, uct.*
+	from
+		usercharacter uct
+	where
+		characterid = #{characterId}
+</select>
+
+<!-- 일반 휴식 -->
+<update id="rest1" parameterType="int">
+update usercharacter 
+set 
+	health = health + 20
+	, gold = gold - 2000 
+where 
+	characterid = #{characterId} 
+</update>
+
+<!-- 고급 휴식 -->
+<update id="rest2" parameterType="int">
+update usercharacter 
+	set health = 100
+	, gold = gold - 4000 
+where 
+	characterid = #{characterId}
+</update>
+
+<!-- 경기 -->
+<update id="play" parameterType="int">
+update usercharacter 
+	set health = 100
+	, gold = gold + 3000
+	, active = 5 
+	, year = year + 1
+where 
+	characterid = #{characterId}
+</update>
+
+<!-- 명예의 전당으로 이동 -->
+<insert id="hofInsert" parameterType="character">
+insert into halloffame
+	values (halloffameidseq.nextval, #{userId}, #{characterName}, #{allStat}, #{className})
+</insert>
+
+<update id="training" parameterType="training">
+update usercharacter
+	<set>
+		active = active - 1
+		, health = health - 25
+		<if test='trainingId == 1 and coachId == 1'>
+			,hitterPower = hitterPower + 5
+		</if>
+		<if test='trainingId == 1 and coachId == 2'>
+			,hitterPower = hitterPower + round(dbms_random.value(1,10))
+		</if>
+		<if test='trainingId == 2 and coachId == 1'>
+			,hitterHit = hitterHit + 5
+		</if>
+		<if test='trainingId == 2 and coachId == 2'>
+			,hitterHit = hitterHit + round(dbms_random.value(1,10))
+		</if>
+		<if test='trainingId == 3 and coachId == 1'>
+			,hitterRunSpeed = hitterRunSpeed + 5
+		</if>
+		<if test='trainingId == 3 and coachId == 2'>
+			,hitterRunSpeed = hitterRunSpeed + round(dbms_random.value(1,10))
+		</if>
+		<if test='trainingId == 4 and coachId == 1'>
+			,pitcherBallSpeed = pitcherBallSpeed + 5
+		</if>
+		<if test='trainingId == 4 and coachId == 2'>
+			,pitcherBallSpeed = pitcherBallSpeed + round(dbms_random.value(1,10))
+		</if>
+		<if test='trainingId == 5 and coachId == 1'>
+			,pitcherBallControl = pitcherBallControl + 5
+		</if>
+		<if test='trainingId == 5 and coachId == 2'>
+			,pitcherBallControl = pitcherBallControl + round(dbms_random.value(1,10))
+		</if>
+		<if test='trainingId == 6 and coachId == 1'>
+			,pitcherMentality = pitcherMentality + 5
+		</if>
+		<if test='trainingId == 6 and coachId == 2'>
+			,pitcherMentality = pitcherMentality + round(dbms_random.value(1,10))
+		</if>
+	</set>
+where
+	characterId = #{characterId}
+</update>
+
+<select id="quizForm" resultType="quiz">
+select 
+	* 
+from 
+	(select * from quiz order by dbms_random.value) 
+where 
+	rownum  <![CDATA[ <= ]]> 5 
+</select>
+
+<!-- 퀴즈 점수 입력 -->
+<insert id="quizScoreInsert" parameterType="quizScore">
+insert into quizscore 
+values(quizscoreseq.nextval, #{userId}, #{correctAnswer}, #{wrongAnswer}, #{correctPercent})
+</insert>
+
+<!-- 마지막 추가된 퀴즈 점수 -->
+<select id="quizResult" resultType="quizScore">
+select * from quizscore where quizscorenumber = (select max(quizscorenumber) from quizscore)
+</select>
+
+<!-- 퀴즈 정답률 순위 불러오기 -->
+<select id="quizRank" resultType="quizScore">
+select 
+	userId, avg(correctPercent) as correctPercent 
+from 
+	quizscore 
+group by 
+	userId 
+order by 
+	correctPercent desc
+</select>
+
+<!-- 아이템정보 가져오기 -->
+<select id="storeForm" resultType="item">
+select
+	*
+from
+	item
+order by
+	itemId asc
+</select>
+
+<!-- 아이템 구매정보를 소유아이템 db에 저장 -->
+<insert id="itemPur" parameterType="itemHave">
+insert into itemhaveinfo values(#{characterId}, #{itemId}, 1)
+</insert>
+<!-- 구매후 골드소모 적용 -->
+<update id="itemGoldUpdate" parameterType="map">
+update usercharacter
+set
+	gold = gold - #{price}
+where
+	characterId = #{characterId}
+</update>
+
+
+<!-- 아이템 id로 아이템 정보 가져오기 -->
+<select id="itemInfo" parameterType="int" resultType="item">
+select
+	*
+from
+	item
+where
+	itemId = #{itemId}
+</select>
+
+<!-- 소지아이템 정보 -->
+<select id="itemHaveForm" parameterType="int" resultType="item">
+select
+	*
+from
+	item i, itemhaveinfo ih
+where
+	i.itemid = ih.itemid
+	and ih.characterid = #{characterId}
+</select>
+
+<!-- 장착아이템 정보 -->
+<select id="itemEquipHaveForm" parameterType="int" resultType="item">
+select
+	*
+from
+	item i, itemequiphaveinfo ih
+where
+	i.itemid = ih.itemid
+	and ih.characterid = #{characterId}
+</select>
+
+<!-- 소지아이템 정보(1개) -->
+<select id="itemHaveFormOne" parameterType="item" resultType="item">
+select
+	*
+from
+	item i, itemhaveinfo ih
+where
+	i.itemid = ih.itemid
+	and ih.characterid = #{characterId}
+	and ih.itemid = #{itemId}
+</select>
+
+<!-- 장착아이템 정보(1개) -->
+<select id="itemEquipHaveFormOne" parameterType="item" resultType="item">
+select
+	*
+from
+	item i, itemequiphaveinfo ih
+where
+	i.itemid = ih.itemid
+	and ih.characterid = #{characterId}
+	and ih.itemid = #{itemId}
+</select>
+
+<!-- 장착아이템 정보(클래스) -->
+<select id="itemEquipHaveFormClass" parameterType="item" resultType="item">
+select
+	*
+from
+	item i, itemequiphaveinfo ih
+where
+	i.itemid = ih.itemid
+	and ih.characterid = #{characterId}
+	and i.itemclass = #{itemClass}
+</select>
+
+<!-- 캐릭터 아이템 장착 추가 -->
+<insert id="itemEquip" parameterType="item">
+insert into itemequiphaveinfo values(#{characterId}, #{itemId})
+</insert>
+<!-- 장착후 소지정보 업데이트 -->
+<update id="itemEquipUpdate" parameterType="item">
+update itemhaveinfo 
+set
+	quantity = quantity - 1
+where
+	characterid = #{characterId}
+	and itemid = #{itemId}
+</update>
+<!-- 장착후 개수가 0개라 소지정보 삭제 -->
+<delete id="itemEquipDelete" parameterType="item">
+delete from itemhaveinfo
+where
+	characterid = #{characterId}
+	and itemid = #{itemId}
+</delete>
+
+<!-- 장착정보 삭제 -->
+<delete id="itemRemove" parameterType="item">
+delete from itemequiphaveinfo
+where
+	characterid = #{characterId}
+	and itemid = #{itemId}
+</delete>
+<!-- 장착해제후 개수 업데이트 -->
+<update id="itemRemoveUpdate" parameterType="item">
+update itemhaveinfo
+set
+	quantity = quantity + 1
+where
+	characterid = #{characterId}
+	and itemid = #{itemId}
+</update>
+<!-- 장착해제후 소지정보에 없어서 인서트 -->
+<insert id="itemRemoveInsert" parameterType="item">
+insert into itemhaveinfo values(#{characterId}, #{itemId}, 1)
+</insert>
+</mapper>

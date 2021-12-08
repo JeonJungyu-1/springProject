@@ -1,0 +1,101 @@
+@charset "UTF-8";
+/* body {
+	background-color: #fff;
+}
+
+h1 {
+	color: #ccc;
+	text-align: center;
+}
+h2 {
+	color: #64DB99;	
+	text-align: center;
+} */
+
+button {
+	display: block;
+	margin: auto;
+}
+
+.menu{
+  background:#1AAB8A;
+  color:#fff;
+  border:none;
+  position:relative;
+  width:250px;
+  height:60px;
+  font-size:1.6em;
+  padding:0 2em;
+  cursor:pointer;
+  transition:800ms ease all;
+  outline:none;
+}
+.menu:hover{
+  background:#fff;
+  color:#1AAB8A;
+}
+.menu:before,button:after{
+  content:'';
+  position:absolute;
+  top:0;
+  right:0;
+  height:2px;
+  width:0;
+  background: #1AAB8A;
+  transition:400ms ease all;
+}
+.menu:after{
+  right:inherit;
+  top:inherit;
+  left:0;
+  bottom:0;
+}
+.menu:hover:before,.menu:hover:after{
+  width:100%;
+  transition:800ms ease all;
+}
+
+/* table tbody tr:nth-child(odd) {
+	background-color: #000000;
+}
+
+tbale tbody tr:nth-child(even) {
+	background-color: #6e6e6e;
+} */
+
+/* table {
+  border-collapse: collapse;
+  text-align: left;
+  line-height: 1.5;
+  border: 1px solid #ccc;
+  margin: 20px 10px;
+  
+  display: block;
+  margin: auto;
+  background-color: white;
+}
+table thead {
+  border-right: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  background: #e7708d;
+}
+table thead th {
+  padding: 10px;
+  font-weight: bold;
+  vertical-align: top;
+  color: #fff;
+}
+table tbody th {
+  width: 150px;
+  padding: 10px;
+  font-weight: bold;
+  vertical-align: top;
+  border-bottom: 1px solid #ccc;
+  background: #fcf1f4;
+}
+table td {
+  width: 350px;
+  padding: 10px;
+  vertical-align: top;
+  border-bottom: 1px solid #ccc;
+} */

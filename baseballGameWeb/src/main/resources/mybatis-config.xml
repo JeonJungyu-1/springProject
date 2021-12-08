@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias type="com.scit.test11.vo.MemberVO" alias="member" />
+		<typeAlias type="com.scit.test11.vo.BoardVO" alias="board" />
+		<typeAlias type="com.scit.test11.vo.UserCharacterVO" alias="character" />
+		<typeAlias type="com.scit.test11.vo.TrainingVO" alias="training" />
+		<typeAlias type="com.scit.test11.vo.QuizVO" alias="quiz" />
+		<typeAlias type="com.scit.test11.vo.QuizScoreVO" alias="quizScore" />
+		<typeAlias type="com.scit.test11.vo.QuizCheckVO" alias="quizCheck" />
+		<typeAlias type="com.scit.test11.vo.ItemVO" alias="item" />
+		<typeAlias type="com.scit.test11.vo.ItemHaveInfoVO" alias="itemHave" />
+		<typeAlias type="com.scit.test11.vo.ItemEquipHaveInfoVO" alias="itemEquip" />
+	</typeAliases>
+	<mappers>
+		<mapper resource="mapper/memberMapper.xml" />
+		<mapper resource="mapper/boardMapper.xml" />
+		<mapper resource="mapper/baseballMapper.xml" />
+	</mappers>
+</configuration>

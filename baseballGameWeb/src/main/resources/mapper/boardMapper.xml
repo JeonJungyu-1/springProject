@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.scit.test11.dao.BoardMapper">
+	
+<select id="list" parameterType="string" resultType="board">
+	select
+		board_num
+		, member_id
+		, board_title
+		, to_char(board_inputdate, 'yyyy-MM-dd') as board_inputdate
+	from
+		blog_board
+	where
+		member_id = #{member_id}
+</select>
+
+<insert id="write" parameterType="board">
+	insert into
+		blog_board(
+		board_num
+		, member_id
+		, board_title
+		, board_content
+		) values (
+		blog_board_seq.nextval
+		, #{member_id}
+		, #{board_title}
+		, #{board_content}
+		)
+</insert>
+
+<select id="detail" parameterType="int" resultType="board">
+	select
+		board_num
+		, member_id
+		, board_title
+		, board_content
+		, to_char(board_inputdate, 'yyyy-MM-dd HH:MI:SS') as board_inputdate
+		, board_likecnt
+	from
+		blog_board
+	where
+		board_num = #{board_num}
+</select>
+
+<update id="like" parameterType="int">
+	update blog_board
+	set
+		board_likecnt = board_likecnt + 1
+	where
+		board_num = #{board_num}
+</update>
+
+<update id="update" parameterType="board">
+	update blog_board
+	set
+		board_title = #{board_title}
+		, board_content = #{board_content}
+	where
+		board_num = #{board_num}
+		and member_id = #{member_id}
+</update>
+
+<delete id="delete" parameterType="board">
+	delete from
+		blog_board
+	where
+		board_num = #{board_num}
+		and member_id = #{member_id}
+</delete>
+
+
+</mapper>

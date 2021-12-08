@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.scit.mini1.dao.TowerMapper">
+
+<select id="totalRecord" resultType="int">
+	select
+		count(*)
+	from
+		tower
+</select>
+
+<select id="tower" parameterType="int" resultType="tower">
+	select
+		tower_floor
+		, tower_photo
+		, tower_boss
+	from
+		tower
+	where
+		tower_floor = #{currentTower}
+</select>
+
+<select id="towerMonster" parameterType="towermon" resultType="towermon">
+	select
+		monster_num
+		, monster_name
+		, monster_hp
+		, monster_boss
+		, monster_photo
+	from
+		tower_monster
+	where
+		monster_num = #{monster_num}
+		and monster_boss = #{monster_boss}
+</select>
+
+
+
+
+</mapper>

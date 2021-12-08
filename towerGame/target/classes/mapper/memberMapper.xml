@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.scit.mini1.dao.MemberMapper">
+
+<insert id="join" parameterType="member">
+	insert into
+		tower_member (
+		member_id
+		, member_password
+		, member_name
+		, member_photo)
+		values (
+		#{member_id}
+		, #{member_password}
+		, #{member_name}
+		, #{member_photo})
+</insert>
+
+<select id="login" parameterType="string" resultType="member">
+	select 
+		member_id
+		, member_password
+		, member_name
+	from
+		tower_member
+	where
+		member_id = #{member_id}
+</select>
+
+<select id="selectOne" parameterType="string" resultType="member">
+	select 
+		member_id
+		, member_password
+		, member_name
+		, member_photo
+		, member_level
+		, member_attack
+		, member_exp
+		, member_boss
+	from
+		tower_member
+	where
+		member_id = #{member_id}
+</select>
+
+<update id="updateExp" parameterType="member">
+	update
+		tower_member
+	set
+		member_exp = member_exp + #{member_exp}
+	where
+		member_id = #{member_id}
+</update>
+
+<update id="updateLevel" parameterType="member">
+	update
+		tower_member
+	set
+		member_level = member_level + 1
+		, member_attack = member_attack + 5
+		, member_exp = member_exp - 10
+	where
+		member_id = #{member_id}
+</update>
+
+<update id="updateBoss" parameterType="member">
+	update
+		tower_member
+	set
+		member_boss = #{member_boss}
+	where
+		member_id = #{member_id}
+</update>
+
+
+</mapper>

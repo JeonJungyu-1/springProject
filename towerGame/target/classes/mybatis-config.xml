@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias type="com.scit.mini1.vo.MemberVO" alias="member" />
+		<typeAlias type="com.scit.mini1.vo.BoardVO" alias="board" />
+		<typeAlias type="com.scit.mini1.vo.TowerVO" alias="tower" />
+		<typeAlias type="com.scit.mini1.vo.TowerMonsterVO" alias="towermon" />
+	</typeAliases>
+	<mappers>
+		<mapper resource="mapper/memberMapper.xml" />
+		<mapper resource="mapper/boardMapper.xml" />
+		<mapper resource="mapper/towerMapper.xml" />
+	</mappers>
+</configuration>

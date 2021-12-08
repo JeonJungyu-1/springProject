@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.scit.mini1.dao.BoardMapper">
+
+<select id="search" resultType="hashmap" parameterType="string">
+	select
+		b.board_title as board_title
+		, b.board_context as board_context
+		, to_char(b.board_lastindate, 'yyyy-MM-dd') as board_lastindate
+		, b.member_lastid as member_lastid
+		, b.board_hits as board_hits
+		, m.member_name as member_name
+		, b.board_original as board_original
+		, b.board_saved as board_saved
+	from 
+		tower_member m, tower_board b
+	where
+		b.member_lastid = m.member_id
+		and replace(b.board_title, ' ', '') like '%' || replace(#{searchText}, ' ', '') || '%'
+</select>
+
+<select id="selectOne" resultType="board" parameterType="string">
+	select
+		board_title
+		, board_context
+		, to_char(board_lastindate, 'yyyy-MM-dd') as board_lastindate
+		, member_lastid
+		, board_hits
+		, board_original
+		, board_saved
+	from 
+		tower_board
+	where
+		board_title = #{board_title}
+</select>
+
+<update id="update" parameterType="board">
+	update
+		tower_board
+	set
+		board_context = #{board_context}
+		, board_lastindate = sysdate
+		, member_lastid = #{member_lastid}
+		<if test="board_original != null and board_saved != null">
+		, board_original = #{board_original}
+		, board_saved = #{board_saved}
+		</if>
+	where
+		board_title = #{board_title}
+</update>
+
+<update id="updateDeleteFile" parameterType="string">
+	update
+		tower_board
+	set
+		board_original = null
+		, board_saved = null
+	where
+		board_title = #{board_title}
+</update>
+
+
+</mapper>
